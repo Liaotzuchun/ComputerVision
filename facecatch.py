@@ -1,13 +1,13 @@
 import cv2
 
-cap = cv2.VideoCapture("ning.mp4")
+cap = cv2.VideoCapture("20230222_204647.mp4")
 facecas = cv2.CascadeClassifier('face.xml')
 
 while True:
     ref , frame = cap.read()
     if ref:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        facerect = facecas.detectMultiScale(gray,1.1,5)
+        facerect = facecas.detectMultiScale(gray,1.1,6)
         print(len(facerect))
         for(x,y,w,h) in facerect:
           cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),5)
