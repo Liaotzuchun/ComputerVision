@@ -86,7 +86,7 @@ while True:
                 # 调整轮廓坐标回原图的坐标系
                 contour[:, :, 0] += min(x1, x2)
                 contour[:, :, 1] += min(y1, y2)
-                print(contour)
+                
             cv2.drawContours(image, contours, -1, (0, 0, 255), 2)
 
 
@@ -95,14 +95,14 @@ while True:
             print("X軸的點：")
             i = 1
             for x in sorted(points_by_x):
-                print(f"X={x}: {len(points_by_x[x])} points")
+                print(f"X={i}: {len(points_by_x[x])} points")
                 i+=1
 
             # 按 Y 軸輸出
             j = 1
             print("\nY軸的點：")
             for y in sorted(points_by_y):
-                print(f"Y={y}: {len(points_by_y[y])} points")
+                print(f"Y={j}: {len(points_by_y[y])} points")
                 j+=1
 
             cv2.imshow('Detected Dots', image)
