@@ -44,6 +44,7 @@ while True:
             gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
             _, binary = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
             contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
             points_by_x = {}
             points_by_y = {}  
             for contour in contours:
@@ -53,9 +54,11 @@ while True:
                     cy = int(M['m01'] / M['m00'])
                     cx += min(x1, x2)
                     cy += min(y1, y2)
+
+                    cv2.circle(img, (cx, cy), 3, (0, 0, 255), 3)
                 added_x = False
                 for key_x in points_by_x:
-                    if abs(cx - key_x) <= 5:
+                    if abs(cx - key_x) <= 1:
                         points_by_x[key_x].append((cx, cy))
                         added_x = True
                         break
@@ -64,16 +67,16 @@ while True:
 
                 added_y = False
                 for key_y in points_by_y:
-                    if abs(cy - key_y) <= 5:
+                    if abs(cy - key_y) <= 1:
                         points_by_y[key_y].append((cx, cy))
                         added_y = True
                         break
                 if not added_y:
                     points_by_y[cy] = [(cx, cy)]    
+
                 contour[:, :, 0] += min(x1, x2)
                 contour[:, :, 1] += min(y1, y2)
-                
-            cv2.drawContours(image, contours, -1, (0, 0, 255), 2)
+            image = cv2.drawContours(image, contours, -1, (0, 0, 200), 3)
 
             print("X軸的點：")
             i = 1
@@ -88,5 +91,4 @@ while True:
                 j+=1
 
             cv2.imshow('Detected Dots', image)
-
 cv2.destroyAllWindows()
