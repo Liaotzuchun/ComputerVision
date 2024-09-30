@@ -135,5 +135,5 @@ cv2.imwrite("rotated_image_with_centers.png", rotated_image)
 
 # 直接显示旋转并标记亮点的图像
 cv2.imshow("Rotated Image with Centers", rotated_image)
-cv2.waitKey(0)  # 显示5秒后自动关闭窗口
+cv2.waitKey(0) 
 cv2.destroyAllWindows()
