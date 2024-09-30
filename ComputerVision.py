@@ -73,6 +73,8 @@ gray = cv2.cvtColor(rotated_image, cv2.COLOR_BGR2GRAY)
 # 二值化处理
 _, binary = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
 kernel = np.ones((3, 3), np.uint8)
+
+# 设置 iterations=3 进行形态学开操作，清除噪声和杂点
 binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=3)
 
 # 检测轮廓
@@ -98,6 +100,9 @@ y_values = [center[1] for center in center_list]
 x_min, x_max = min(x_values), max(x_values)
 y_min, y_max = min(y_values), max(y_values)
 
+# 设置误差容忍范围
+error_margin = 5  # 设置误差为5个像素
+
 # 计算网格大小，使得亮点区域划分为 5x12 的矩阵
 grid_size_x = 12  # 列数
 grid_size_y = 5   # 行数
@@ -109,8 +114,8 @@ matrix = np.zeros((grid_size_y, grid_size_x), dtype=int)
 
 # 遍历亮点坐标，将其转换为矩阵中的相对位置
 for center in center_list:
-    grid_x = (center[0] - x_min) // grid_x_step
-    grid_y = (center[1] - y_min) // grid_y_step
+    grid_x = (center[0] - x_min + error_margin) // grid_x_step
+    grid_y = (center[1] - y_min + error_margin) // grid_y_step
 
     # 防止超出范围
     if 0 <= grid_x < grid_size_x and 0 <= grid_y < grid_size_y:
@@ -130,5 +135,5 @@ cv2.imwrite("rotated_image_with_centers.png", rotated_image)
 
 # 直接显示旋转并标记亮点的图像
 cv2.imshow("Rotated Image with Centers", rotated_image)
-cv2.waitKey(0) 
+cv2.waitKey(0)  # 显示5秒后自动关闭窗口
 cv2.destroyAllWindows()
